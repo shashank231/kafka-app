@@ -48,6 +48,23 @@ try:
         key_serializer=lambda k: k.encode('utf-8'),
         value_serializer=lambda v: json.dumps(v).encode('utf-8')
     )
+    # Serializers are translators. 
+        # Kafka doesn't understand Python objects like strings, numbers, or dictionaries. 
+        # It only understands raw bytes
+        # The serializer's job is to convert your Python data into bytes before sending it to Kafka.
+        # key_serializer
+            # This tells the producer how to translate the key (in your case, the driver_id string).
+            # Your Code: lambda k: k.encode('utf-8')
+            # What it does: It takes a Python string (the key, k) and calls the .encode('utf-8') method on it. 
+            #   This turns the string into its byte representation.
+        # value_serializer
+            # This tells the producer how to translate the value (your main message, which is a Python dictionary). 
+            # This one is a two-step process.
+            # Your Code: lambda v: json.dumps(v).encode('utf-8')
+            # What it does:
+            # json.dumps(v): First, it takes the Python dictionary (the value, v) and uses
+            # the json library to serialize it into a JSON-formatted string.
+            # .encode('utf-8'): Second, it takes that new JSON string and encodes that into bytes.
 except NoBrokersAvailable:
     print(f"Error: Could not connect to Kafka broker at {KAFKA_BROKER}")
     sys.exit(1)
