@@ -27,6 +27,11 @@ try:
         # Decode values from bytes (assuming JSON)
         value_deserializer=lambda v: json.loads(v.decode('utf-8'))
     )
+    # value_deserializer
+    # Consumers must need to know in advance what is expected format for key & value coming from Producer
+    # You must never chnage type of data sent by your producers for a topic lifecycle, 
+    # if you wanna change you must create a new topic and reprogram consumers
+
     # Loop forever, polling for new messages
     for message in consumer:
         print(f"\nReceived message from Partition: {message.partition}")
